@@ -264,7 +264,7 @@ export class StencilService {
                             dataTooltipPositionSelector: '.joint-stencil'
                         },
                         image: {
-                            xlinkHref: '../../assets/image-icon1.svg'
+                            xlinkHref: 'https://svgshare.com/i/yqF.svg'
                         },
                         body: {
                             fill: 'transparent',
@@ -297,7 +297,7 @@ export class StencilService {
                             strokeDasharray: '0'
                         },
                         image: {
-                            xlinkHref: '../../assets/image-icon1.svg'
+                            xlinkHref: 'https://svgshare.com/i/yqF.svg'
                         },
                         label: {
                             text: 'card',
@@ -327,7 +327,7 @@ export class StencilService {
                             fill: 'transparent'
                         },
                         image: {
-                            xlinkHref: '../../assets/image-icon1.svg'
+                            xlinkHref: 'https://svgshare.com/i/yqF.svg'
                         },
                         label: {
                             text: 'icon',
@@ -1059,7 +1059,7 @@ export class StencilService {
                             'ref-x': <number><unknown>null,
                             'ref-y': <number><unknown>null,
                             'y-alignment': <string><unknown>null,
-                            'xlink:href': '/assets/member-male.png'
+                            'xlink:href': 'https://i.ibb.co/hdD7x1c/member-male.png'
                         }
                     }
                 }

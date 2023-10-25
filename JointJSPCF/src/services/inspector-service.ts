@@ -13,7 +13,7 @@ export class InspectorService {
         const options = {
 
             colorPalette: [
-                { content: 'transparent', icon: '/assets/transparent-icon.svg' },
+                { content: 'transparent', icon: "https://svgshare.com/i/yfM.svg" },
                 { content: '#f6f6f6' },
                 { content: '#dcd7d7' },
                 { content: '#8f8f8f' },
@@ -32,7 +32,7 @@ export class InspectorService {
             ],
 
             colorPaletteReset: [
-                { content: <string><unknown>undefined, icon: '/assets/no-color-icon.svg' },
+                { content: <string><unknown>undefined, icon: "https://svgshare.com/i/ygY.svg" },
                 { content: '#f6f6f6' },
                 { content: '#dcd7d7' },
                 { content: '#8f8f8f' },
@@ -88,15 +88,15 @@ export class InspectorService {
             ],
 
             imageIcons: [
-                { value: '/assets/image-icon1.svg', content: '<img height="42px" src="assets/image-icon1.svg"/>' },
-                { value: '/assets/image-icon2.svg', content: '<img height="80px" src="assets/image-icon2.svg"/>' },
-                { value: '/assets/image-icon3.svg', content: '<img height="80px" src="assets/image-icon3.svg"/>' },
-                { value: '/assets/image-icon4.svg', content: '<img height="80px" src="assets/image-icon4.svg"/>' }
+                { value: 'https://svgshare.com/i/ygv.svg', content: '<img height="42px" src="https://svgshare.com/i/ygv.svg"/>' },
+                { value: 'https://svgshare.com/i/ygF.svg', content: '<img height="80px" src="https://svgshare.com/i/ygF.svg"/>' },
+                { value: 'https://svgshare.com/i/ygG.svg', content: '<img height="80px" src="https://svgshare.com/i/ygG.svg"/>' },
+                { value: 'https://svgshare.com/i/yfv.svg"', content: '<img height="80px" src="https://svgshare.com/i/yfv.svg"/>' }
             ],
 
             imageGender: [
-                { value: '/assets/member-male.png', content: '<img height="50px" src="assets/member-male.png" style="margin: 5px 0 0 2px;"/>' },
-                { value: '/assets/member-female.png', content: '<img height="50px" src="assets/member-female.png" style="margin: 5px 0 0 2px;"/>' }
+                { value: 'https://i.ibb.co/hdD7x1c/member-male.png', content: '<img height="50px" src="https://i.ibb.co/hdD7x1c/member-male.png" style="margin: 5px 0 0 2px;"/>' },
+                { value: 'https://i.ibb.co/PNYR1Hz/member-female.png', content: '<img height="50px" src="https://i.ibb.co/PNYR1Hz/member-female.png" style="margin: 5px 0 0 2px;"/>' }
             ],
 
             arrowheadSize: [

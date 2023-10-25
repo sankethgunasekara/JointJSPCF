@@ -6,7 +6,10 @@ import { InspectorService } from './inspector-service';
 import { HaloService } from './halo-service';
 import { KeyboardService } from './keyboard-service';
 import * as appShapes from '../shapes/app-shapes';
-// import { HandlePosition } from '@clientio/rappid';
+import html2canvas from 'html2canvas';
+import { saveAs } from 'file-saver';
+
+
 
 class KitchenSinkService {
 
@@ -213,101 +216,109 @@ class KitchenSinkService {
 
 
         //For Grouping the Elements
-        // const selection = new joint.ui.Selection({
-        //     theme: "material",
-        //     paper: this.paper,
-        //     useModelGeometry: true,
-        //     filter: (el) => el.isEmbedded(),
-        //     handles: []
-        //   });
 
-        //   selection.collection.on("reset", () => {
-        //     const elements = selection.collection.toArray();
-        //     selection.removeHandle("group");
-        //     if (elements.length === 0) return;
-        //     const [element] = elements;
-        //     if (elements.length > 1) {
-        //       selection.addHandle({
-        //         name: "group",
-        //         position: "nw",
-        //         icon: "https://assets.codepen.io/7589991/group.svg",
-        //         attrs: {
-        //           ".handle": { title: `Group ${elements.length} Elements.` }
-        //         },
-        //         events: {
-        //           pointerdown: () => toggleSelection()
-        //         }
-        //       });
-        //     } else if (element.getEmbeddedCells().length > 0) {
-        //       selection.addHandle({
-        //         name: "group",
-        //         position:  HandlePosition.NW,
-        //         icon: "https://assets.codepen.io/7589991/ungroup.svg",
-        //         attrs: {
-        //           ".handle": {
-        //             title: `Ungroup ${element.getEmbeddedCells().length} Elements.`
-        //           }
-        //         },
-        //         events: {
-        //           pointerdown: () => toggleSelection()
-        //         }
-        //       });
-        //     }
-        //   });
+        enum HandlePosition {
+            N = 'n', NW = 'nw',
+            W = 'w', SW = 'sw',
+            S = 's', SE = 'se',
+            E = 'e', NE = 'ne'
+        }
+        
+        const selection = new joint.ui.Selection({
+            theme: "material",
+            paper: this.paper,
+            useModelGeometry: true,
+            filter: (el) => el.isEmbedded(),
+            handles: []
+          });
 
-        //   this.paper.on("blank:pointerdown", (evt) => selection.startSelecting(evt));
+          selection.collection.on("reset", () => {
+            const elements = selection.collection.toArray();
+            selection.removeHandle("group");
+            if (elements.length === 0) return;
+            const [element] = elements;
+            if (elements.length > 1) {
+              selection.addHandle({
+                name: "group",
+                position: HandlePosition.NE,
+                icon: "https://assets.codepen.io/7589991/group.svg",
+                attrs: {
+                  ".handle": { title: `Group ${elements.length} Elements.` }
+                },
+                events: {
+                  pointerdown: () => toggleSelection(this.graph)
+                }
+              });
+            } else if (element.getEmbeddedCells().length > 0) {
+              selection.addHandle({
+                name: "group",
+                position:  HandlePosition.NE,
+                icon: "https://assets.codepen.io/7589991/ungroup.svg",
+                attrs: {
+                  ".handle": {
+                    title: `Ungroup ${element.getEmbeddedCells().length} Elements.`
+                  }
+                },
+                events: {
+                  pointerdown: () => toggleSelection(this.graph)
+                }
+              });
+            }
+          });
 
-        //   this.paper.on("element:pointerclick", (elementView) => {
-        //     const element = elementView.model;
-        //     const [group = element] = element.getAncestors().reverse();
-        //     selection.collection.reset([group]);
-        //   });
+          this.paper.on("blank:pointerdown", (evt) => selection.startSelecting(evt));
 
-        //   function toggleSelection() {
-        //     const elements = selection.collection.toArray();
-        //     if (elements.length === 0) return;
-        //     if (elements.length === 1) {
-        //       ungroupElement(elements[0]);
-        //     } else {
-        //       groupElements(elements);
-        //     }
-        //   }
-        //   const groupTemplate = new joint.shapes.standard.Rectangle({
-        //     attrs: {
-        //       root: {
-        //         pointerEvents: "none"
-        //       },
-        //       body: {
-        //         // For the purpose of the demo it has a color (it should be `none` in fact)
-        //         stroke: "#FF4468",
-        //         strokeDasharray: "5,5",
-        //         strokeWidth: 2,
-        //         fill: "#FF4468",
-        //         fillOpacity: 0.2
-        //       }
-        //     }
-        //   });
+          this.paper.on("element:pointerclick", (elementView) => {
+            const element = elementView.model;
+            const [group = element] = element.getAncestors().reverse();
+            selection.collection.reset([group]);
+          });
+
+          function toggleSelection(graph: joint.dia.Graph) {
+            const elements = selection.collection.toArray();
+            if (elements.length === 0) return;
+            if (elements.length === 1) {
+              ungroupElement(elements[0]);
+            } else {
+              groupElements(elements, graph);
+            }
+          }
+          const groupTemplate = new joint.shapes.standard.Rectangle({
+            attrs: {
+              root: {
+                pointerEvents: "none"
+              },
+              body: {
+                // For the purpose of the demo it has a color (it should be `none` in fact)
+                stroke: "#FF4468",
+                strokeDasharray: "5,5",
+                strokeWidth: 2,
+                fill: "#FF4468",
+                fillOpacity: 0.2
+              }
+            }
+          });
           
-        //   function groupElements(elements: any[]) {
-        //     const minZ = elements.reduce(
-        //       (z, el) => Math.min(el.get("z") || 0, z),
-        //       -Infinity
-        //     );
-        //     const group = groupTemplate.clone();
-        //     group.set("z", minZ - 1);
-        //     group.addTo(graph);
-        //     group.embed(elements);
-        //     group.fitEmbeds();
-        //     selection.collection.reset([group]);
-        //   }
+          function groupElements(elements: any[], graph: joint.dia.Graph) {
+            const minZ = elements.reduce(
+              (z, el) => Math.min(el.get("z") || 0, z),
+              -Infinity
+            );
+            const group = groupTemplate.clone();
+            group.set("z", minZ - 1);
+            group.addTo(graph);
+            group.embed(elements);
+            group.fitEmbeds();
+            selection.collection.reset([group]);
+          }
           
-        //   function ungroupElement(element: any []) {
-        //     const embeds = element.getEmbeddedCells();
-        //     if (embeds.length === 0) return;
-        //     element.unembed(embeds);
-        //     element.remove();
-        //     selection.collection.reset(embeds);
-        //   }
+          function ungroupElement(element: { getEmbeddedCells: () => any; unembed: (arg0: any) => void; remove: () => void; }) {
+            const embeds = element.getEmbeddedCells();
+            if (embeds.length === 0) return;
+            element.unembed(embeds);
+            element.remove();
+            selection.collection.reset(embeds);
+          }
 
     }
 
@@ -501,7 +512,8 @@ class KitchenSinkService {
             'snapline:change': this.changeSnapLines.bind(this),
             'clear:pointerclick': this.graph.clear.bind(this.graph),
             'print:pointerclick': this.paper.print.bind(this.paper),
-            'grid-size:change': this.paper.setGridSize.bind(this.paper)
+            'grid-size:change': this.paper.setGridSize.bind(this.paper),
+            'screenshot:pointerclick': this.takeScreenshot.bind(this)
         });
 
         this.renderPlugin('.toolbar-container', this.toolbarService.toolbar);
@@ -601,6 +613,32 @@ class KitchenSinkService {
         }
     }
     }
+
+    takeScreenshot() {
+        const selectedDiv: any = document.querySelector('.paper-container');
+        if (!selectedDiv) {
+            console.error('Paper container not found.');
+            return;
+        }
+
+        html2canvas(selectedDiv, {
+            scale: 2,
+            useCORS: true,
+        })
+        .then((canvas) => {
+            const newCanvas = document.createElement('canvas');
+            const context: any = newCanvas.getContext('2d');
+            newCanvas.width = canvas.width;
+            newCanvas.height = canvas.height;
+            context.fillStyle = 'white';
+            context.fillRect(0, 0, canvas.width, canvas.height);
+            context.drawImage(canvas, 0, 0);
+
+            const screenshotDataUrl = newCanvas.toDataURL('image/png');
+            saveAs(screenshotDataUrl, 'screenshot.png');
+        });
+    }
+
 }
 
 export default KitchenSinkService;

@@ -2,5 +2,11 @@
     "extends": "./node_modules/pcf-scripts/tsconfig_base.json",
     "compilerOptions": {
         "typeRoots": ["node_modules/@types"],
+        "baseUrl": "./JointJSPCF/src",
+        "paths": {
+        "*": ["types/*"]
+        },
+        "esModuleInterop": true,
+        "allowSyntheticDefaultImports": true,
     }
 }

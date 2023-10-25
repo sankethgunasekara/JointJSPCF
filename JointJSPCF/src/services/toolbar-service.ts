@@ -32,7 +32,8 @@ export class ToolbarService {
                 'layout': { index: 7 },
                 'zoom': { index: 8 },
                 'grid': { index: 9 },
-                'snapline': { index: 10 }
+                'snapline': { index: 10 },
+                'screenshot': {index: 11}
             },
 
             tools: [
@@ -261,7 +262,21 @@ export class ToolbarService {
                             'data-tooltip-position-selector': '.toolbar-container'
                         }
                     }
-                }
+                },
+                {
+                    type: 'button',
+                    name: 'screenshot',
+                    group: 'screenshot',
+                    text:'Screenshot',
+                    attrs: {
+                        button: {
+                            id: 'btn-print',
+                            'data-tooltip': 'Take Screenshot',
+                            'data-tooltip-position': 'top',
+                            'data-tooltip-position-selector': '.toolbar-container'
+                        }
+                    }
+                },
             ]
         };
     }
